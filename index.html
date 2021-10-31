@@ -3,10 +3,22 @@
   <head>
     <meta charset="UTF-8">
     <title>Screen capture demo</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <p><input id='record' type='button' value='start'/></p>
-    <p><input id='stop' type='button' value='stop'/></p>
+    <div id="container">
+      <svg style="width:100px;height:100px" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" />
+      </svg>
+      <div class="circle" style="animation-delay: -3s"></div>
+      <div class="circle" style="animation-delay: -2s"></div>
+      <div class="circle" style="animation-delay: -1s"></div>
+      <div class="circle" style="animation-delay: 0s"></div>
+    </div>
+    <div style="text-align: center; border: 1px solid">
+      <input style="width:20%; height:10%;" id='record' type='button' value='start'/>
+      <input style="width:20%; height:10%" id='stop' type='button' value='stop'/>
+    </div>
     <!-- Even if we are only concerned about the audio, we still need to use the video tag. -->
     <video autoplay></video>
     <script type = "text/javascript">
@@ -38,7 +50,7 @@
                 var formData = new FormData();
                 formData.append('audio_data', blob);
                 formData.append('audio_name', 'test.wav');
-                axios.post('http://127.0.0.1:5000/upload', formData, {
+                axios.post('http://34.201.98.136:5000/upload', formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }
