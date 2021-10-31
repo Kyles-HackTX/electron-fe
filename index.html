@@ -5,27 +5,42 @@
     <title>Screen capture demo</title>
   </head>
   <body>
-    <p><input id='captureScreens' type='button' value='Capture screens'/></p>
-    <!-- Without the below line, this project refuses to take the audio inputs gracefully. -->
+    <p><input id='record' type='button' value='start'/></p>
+    <p><input id='stop' type='button' value='stop'/></p>
+    <!-- Even if we are only concerned about the audio, we still need to use the video tag. -->
     <video autoplay></video>
-      <script type = "text/javascript">
-         function errorCallback(e) {
-            console.log('Error', e)
-         }
-
-         
-         navigator.getUserMedia({video: true, audio: true}, (localMediaStream) => {
-            var video = document.querySelector('video')
-            video.src = window.URL.createObjectURL(localMediaStream)
-            video.onloadedmetadata = (e) => {
-               // Ready to go. Do some stuff.
-            };
-         }, errorCallback)
-      </script>
+    <script type = "text/javascript">
+      var video = document.querySelector('video')
+      var chunks = [];
+      var mediaRecorder;
+      function errorCallback(e) {
+        console.log('Error', e)
+      }
+      recordButton = document.getElementById('record');
+      stopButton = document.getElementById('stop');
+      navigator.getUserMedia({video: false, audio: true}, (localMediaStream) => {
+        var video = document.querySelector('video')
+        video.src = window.URL.createObjectURL(localMediaStream)
+        video.onloadedmetadata = (e) => {
+          mediaRecorder = new MediaRecorder(localMediaStream);
+          mediaRecorder.ondataavailable = e => chunks.push(e.data);
+          mediaRecorder.onstop = function(e) {
+            var blob = new Blob(chunks, { 'type' : 'audio/wav' });
+            chunks = [];
+            var audioURL = URL.createObjectURL(blob);
+            const audio = new Audio(audioURL);
+            audio.play();
+          }
+          recordButton.onclick = function(e) {
+            console.log('starting to record');
+            mediaRecorder.start();
+          }
+          stopButton.onclick = function(e) {
+            console.log('stopping the recording');
+            mediaRecorder.stop();
+          }
+        };
+      }, errorCallback);
+    </script>
   </body>
-
-  <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
-  </script>
 </html>
