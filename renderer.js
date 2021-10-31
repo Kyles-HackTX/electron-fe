@@ -30,23 +30,7 @@ var captureScreens = () => {
             maxHeight: 320
           }
         }
-      })
-      .then((stream) => {
-        //Without the below lines of code, the project gets confused and refuses to intake the audio inputs correctly.
-        const screenVideos = document.getElementById('screenVideos')
-        const video = document.createElement('video')
-        screenVideos.appendChild(video)
-        video.srcObject = stream
-        video.onloadedmetadata = () => {
-          video.play()
-        }
-      })
-      .catch((error) => console.error(error))
-    })
-    const displays = electron.screen.getAllDisplays()
-    displays.forEach((display) => {
-      const size = display.size
-      screenInfo.textContent += `${display.id} (${size.width} x ${size.height}), `
+      }).catch((error) => console.error(error))
     })
   })
 }
