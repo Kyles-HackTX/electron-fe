@@ -10,6 +10,7 @@
     <!-- Even if we are only concerned about the audio, we still need to use the video tag. -->
     <video autoplay></video>
     <script type = "text/javascript">
+      let axios = require("axios");
       var video = document.querySelector('video')
       var chunks = [];
       var mediaRecorder;
@@ -26,6 +27,26 @@
           mediaRecorder.ondataavailable = e => chunks.push(e.data);
           mediaRecorder.onstop = function(e) {
             var blob = new Blob(chunks, { 'type' : 'audio/wav' });
+
+            var fileReader = new FileReader();
+            let arrayBuffer;
+
+            fileReader.onloadend = () => {
+                arrayBuffer = fileReader.result;
+                console.log(arrayBuffer);
+                
+                var formData = new FormData();
+                formData.append('audio_data', blob);
+                formData.append('audio_name', 'test.wav');
+                axios.post('http://127.0.0.1:5000/upload', formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                })
+            };
+            fileReader.readAsArrayBuffer(blob);
+
+            console.log(blob);
             chunks = [];
             var audioURL = URL.createObjectURL(blob);
             const audio = new Audio(audioURL);
