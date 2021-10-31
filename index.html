@@ -8,6 +8,7 @@
     Chromium <script>document.write(process.versions.chrome)</script>,
     Electron <script>document.write(process.versions.electron)</script>
     <p><input id='captureScreens' type='button' value='Capture screens'/></p>
+    <!-- Without the below line, this project refuses to take the audio inputs gracefully. -->
     <video autoplay></video>
       <script type = "text/javascript">
          function errorCallback(e) {

@@ -32,6 +32,7 @@ var captureScreens = () => {
         }
       })
       .then((stream) => {
+        //Without the below lines of code, the project gets confused and refuses to intake the audio inputs correctly.
         const screenVideos = document.getElementById('screenVideos')
         const video = document.createElement('video')
         screenVideos.appendChild(video)
