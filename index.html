@@ -2,18 +2,30 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <link href="./styles.css" rel="stylesheet">
-    <title>Hello World!</title>
+    <title>Screen capture demo</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    Electron <script>document.write(process.versions.electron)</script>
+    <p><input id='captureScreens' type='button' value='Capture screens'/></p>
+    <video autoplay></video>
+      <script type = "text/javascript">
+         function errorCallback(e) {
+            console.log('Error', e)
+         }
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+         navigator.getUserMedia({video: true, audio: true}, (localMediaStream) => {
+            var video = document.querySelector('video')
+            video.src = window.URL.createObjectURL(localMediaStream)
+            video.onloadedmetadata = (e) => {
+               // Ready to go. Do some stuff.
+            };
+         }, errorCallback)
+      </script>
   </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
 </html>
