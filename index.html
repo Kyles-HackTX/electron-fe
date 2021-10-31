@@ -42,6 +42,15 @@
                   background-color: aliceblue;" 
         id='stop' type='button'>stop</div>
     </div>
+    <div id='ears' 
+      style="text-align: center; 
+             align-items: center; 
+             justify-content: center; 
+             display: flex; 
+             flex-direction: row;
+             margin-top: 10px;">
+      I will display
+    </div>
     <!-- Even if we are only concerned about the audio, we still need to use the video tag. -->
     <video autoplay muted></video>
     <script type = "text/javascript">
@@ -54,6 +63,7 @@
       }
       recordButton = document.getElementById('record');
       stopButton = document.getElementById('stop');
+      ears = document.getElementById('ears');
       navigator.getUserMedia({video: false, audio: true}, (localMediaStream) => {
         var video = document.querySelector('video')
         video.src = window.URL.createObjectURL(localMediaStream)
@@ -67,6 +77,26 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     let emotion = xhr.responseText;
+                    let emotionInString = emotion.toString();
+                    if (emotionInString === 'neutral') {
+                      ears.innerHTML = 'neutral &#128528'
+                    } else if (emotionInString === 'calm') {
+                      ears.innerHTML = 'You sound calm &#128578'
+                    } else if (emotionInString === 'happy') {
+                      ears.innerHTML = 'Glad that your are happy &#128512'
+                    } else if (emotionInString === 'sad') {
+                      ears.innerHTML = 'If this state continues, I would like to suggest that you should go see a therapist &#128546'
+                    } else if (emotionInString === 'angry') {
+                      ears.innerHTML = 'Hope you don\'t lash it out on someone you care &#1F620'
+                    } else if (emotionInString === 'fear') {
+                      ears.innerHTML = 'Hope it didn\'t traumatized you &#1F628'
+                    } else if (emotionInString === 'disgust') {
+                      ears.innerHTML = 'You seem disgusted &#1F922'
+                    } else if (emotionInString === 'surprise') {
+                      ears.innerHTML = 'You seem surprised &#128562'
+                    } else {
+                      ears.innerHTML = 'neutral &#129488'
+                    }
                 }
             }
             
