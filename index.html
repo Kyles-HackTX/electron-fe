@@ -64,6 +64,11 @@
             var blob = new Blob(chunks, { 'type' : 'audio/wav' });
 
             var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    let emotion = xhr.responseText;
+                }
+            }
             
             var fd=new FormData();
             fd.append("audio_data",blob, "upload.wav");
