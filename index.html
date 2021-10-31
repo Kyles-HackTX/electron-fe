@@ -63,10 +63,14 @@
           mediaRecorder.onstop = function(e) {
             var blob = new Blob(chunks, { 'type' : 'audio/wav' });
 
-            var fileReader = new FileReader();
-            let arrayBuffer;
+            var xhr = new XMLHttpRequest();
+            
+            var fd=new FormData();
+            fd.append("audio_data",blob, "upload.wav");
+            xhr.open("POST","http://34.201.98.136:5000/upload",true);
+            xhr.send(fd);
 
-            fileReader.onloadend = () => {
+            /*fileReader.onloadend = () => {
                 arrayBuffer = fileReader.result;
                 console.log(arrayBuffer);
                 
@@ -79,7 +83,8 @@
                   }
                 })
             };
-            fileReader.readAsArrayBuffer(blob);
+            */
+            //fileReader.readAsArrayBuffer(blob);
 
             console.log(blob);
             chunks = [];
